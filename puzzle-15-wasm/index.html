@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>15 Puzzle</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: sans-serif;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .puzzle {
+            display: grid;
+            grid-template-columns: repeat(4, 60px);
+            grid-template-rows: repeat(4, 60px);
+            gap: 2px;
+        }
+        .tile {
+            width: 60px;
+            height: 60px;
+            background-color: #007acc;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .tile.empty {
+            background-color: #ddd;
+            cursor: default;
+        }
+        .tile:hover {
+            background-color: #005fa3;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        button {
+            padding: 8px 16px;
+            font-size: 16px;
+            background-color: #007acc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005fa3;
+        }
+        .counter {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="counter">Moves: <span id="move-count">0</span></div>
+        <canvas id="puzzle_canvas" width="248" height="248"></canvas>
+        <div class="controls">
+            <button id="restart">Restart</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import init, { Puzzle } from './pkg/puzzle_15_wasm.js';
+
+        async function main() {
+            await init();
+
+            const puzzle = new Puzzle("puzzle_canvas");
+
+            const restartBtn = document.getElementById('restart');
+            restartBtn.onclick = () => {
+                puzzle.restart();
+            };
+        }
+
+        main().catch(console.error);
+    </script>
+</body>
+</html>
